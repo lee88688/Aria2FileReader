@@ -9,7 +9,7 @@ function statusConfig () {
     files: [
       {
         index: '1',
-        length: '8388608',
+        length: '8388608', // 4 pieces
         path: '/downloads/file'
       },
       {
@@ -35,6 +35,6 @@ describe('Aria2Status', function () {
     const as = new Aria2Status(status)
     expect(as.get('1', 0, pieceLength * 4 + 10)).to.equal('10001')
     expect(as.get('1', pieceLength, pieceLength * 3)).to.equal('000')
-    expect(as.get('2', pieceLength, pieceLength * 4 + 10)).to.equal('0001')
+    expect(as.get('2', 0, pieceLength * 4 + 10)).to.equal('00001')
   })
 })

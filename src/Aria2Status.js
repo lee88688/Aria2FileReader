@@ -24,7 +24,7 @@ class Aria2Status {
   }
 
   /**
-   * get binary pieces between start bytes and stop bytes.
+   * get binary pieces between start bytes and stop bytes. start and stop bytes is included.
    * @param {Number} index
    * @param {Number} start bytes start at 0
    * @param {Number} stop bytes start at 0
@@ -41,6 +41,9 @@ class Aria2Status {
     if (!file) {
       return ''
     }
+    const { offset } = file
+    start += offset
+    stop += offset
     let startPiece = Math.ceil((start + 1) / this._pieceLength)
     let stopPiece = Math.ceil((stop + 1) / this._pieceLength)
     const startPieceDiv4 = Math.ceil(startPiece / 4)
