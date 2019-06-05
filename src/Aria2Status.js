@@ -14,6 +14,17 @@ function oneHexTo4Bin (hex) {
   }
 }
 
+function headOnes (bin) {
+  let count = 0
+  for (const c of bin) {
+    if (c !== '1') {
+      break
+    }
+    count++
+  }
+  return count
+}
+
 class Aria2Status {
   constructor (status = {}) {
     this._parse(status)
@@ -24,7 +35,7 @@ class Aria2Status {
   }
 
   /**
-   * get binary pieces between start bytes and stop bytes. start and stop bytes is included.
+   * get binary pieces between start bytes and stop bytes. Both start and stop bytes is included.
    * @param {Number} index
    * @param {Number} start bytes start at 0
    * @param {Number} stop bytes start at 0
@@ -39,7 +50,10 @@ class Aria2Status {
       }
     }
     if (!file) {
-      return ''
+      throw new Error(`wrong file index(${index})`)
+    }
+    if (stop >= file.length) {
+      throw new Error(`wrong stop position(${stop} >= ${file.length})`)
     }
     const { offset } = file
     start += offset
@@ -59,6 +73,26 @@ class Aria2Status {
   isAvailable (index, start, stop) {
     const bin = this.get(index, start, stop)
     return ((1 << bin.length) - parseInt(bin, 2)) === 1
+  }
+
+  /**
+   * get first available byte length from the index of file.
+   */
+  getAvailableLength (index) {
+    let file
+    for (const f of this._files) {
+      if (f.index === index) {
+        file = f
+        break
+      }
+    }
+    if (!file) {
+      return ''
+    }
+    const bin = this.get(index, 0, file.length - 1)
+    const onesLength = headOnes(bin) * this._pieceLength
+    const offsetInlcudeOnes = Math.floor(onesLength + file.offset)
+    return offsetInlcudeOnes - file.offset
   }
 
   _parse (status) {
