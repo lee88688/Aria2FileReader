@@ -26,6 +26,7 @@ function rangeParse (str) {
 class Aria2StreamServer {
   constructor (port) {
     this._app = new Koa()
+    this._app.use(this.streamMiddleware.bind(this))
     this._port = port
     this._reader = {}
   }
@@ -58,7 +59,7 @@ class Aria2StreamServer {
     // parse path to get gid and index
     const [gid, index] = ctx.path.split('/').filter(item => item)
     if (!(gid in this._reader) || !this._reader[gid].select(index)) {
-      ctx.status = 400
+      ctx.status = 404
       ctx.body = 'gid or index is not found!'
       return
     }
@@ -74,9 +75,10 @@ class Aria2StreamServer {
     if (start < availableLength && end >= availableLength) {
       end = availableLength - 1
     } else if (start >= availableLength) {
-      ctx.status = 416
-      return
+      // ctx.status = 416
+      // return
     }
+    end = end === Infinity ? file.length - 1 : end
     const path = file.path
     const fileSize = file.length
     ctx.status = 206

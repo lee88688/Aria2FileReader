@@ -26,7 +26,7 @@ function headOnes (bin) {
 }
 
 class Aria2Status {
-  constructor (status = {}) {
+  constructor (status) {
     this._parse(status)
   }
 

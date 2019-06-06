@@ -9,7 +9,7 @@ class Aria2FileReader {
   }
 
   update (s) {
-    this._status(s)
+    this._status.update(s)
   }
 
   select (index) {
@@ -25,7 +25,7 @@ class Aria2FileReader {
   }
 
   availableLength () {
-    this._status.getAvailableLength(this._index)
+    return this._status.getAvailableLength(this._index)
   }
 
   readableStream (start, end) {
