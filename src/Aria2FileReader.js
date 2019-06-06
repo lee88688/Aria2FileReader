@@ -5,6 +5,7 @@ class Aria2FileReader {
   constructor () {
     this._status = new Aria2Status()
     this._index = '1'
+    this._file = null
   }
 
   update (s) {
@@ -15,24 +16,27 @@ class Aria2FileReader {
     const files = this._status._files
     for (const f of files) {
       if (f.index === index || f.path.includes(index)) {
+        this._file = f
         this._index = f.index
-        break
+        return true
       }
     }
+    return false
+  }
+
+  availableLength () {
+    this._status.getAvailableLength(this._index)
   }
 
   readableStream (start, end) {
-    if (!this._status.isAvailable(this._index, start, end)) {
-      return
-    }
-    const files = this._status._files
-    let file
-    for (const f of files) {
-      if (f.index === this._index) {
-        file = f
-      }
-    }
-    return fs.createReadStream(file.path, { start, end })
+    // const files = this._status._files
+    // let file
+    // for (const f of files) {
+    //   if (f.index === this._index) {
+    //     file = f
+    //   }
+    // }
+    return fs.createReadStream(this._file.path, { start, end })
   }
 }
 

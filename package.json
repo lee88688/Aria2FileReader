@@ -4,12 +4,13 @@
   "description": "stream aria2 downloading file.",
   "main": "src/index.js",
   "scripts": {
-    "test": "mocha test"
+    "test": "mocha ./test/**/*test.js"
   },
   "author": "Jimmie Lee",
   "license": "MIT",
   "dependencies": {
-    "bitfield": "^2.0.0"
+    "koa": "^2.7.0",
+    "mime-types": "^2.1.24"
   },
   "devDependencies": {
     "chai": "^4.2.0",
