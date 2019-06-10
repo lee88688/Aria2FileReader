@@ -29,13 +29,6 @@ class Aria2FileReader {
   }
 
   readableStream (start, end) {
-    // const files = this._status._files
-    // let file
-    // for (const f of files) {
-    //   if (f.index === this._index) {
-    //     file = f
-    //   }
-    // }
     return fs.createReadStream(this._file.path, { start, end })
   }
 }
