@@ -25,7 +25,7 @@ Feel free to submit pull requests to us.
 
 ## Authors
 
-* **lee88688** - *Initial work* - [lee88688](https://github.com/lee88688)
+* **Jimmie Lee** - *Initial work* - [lee88688](https://github.com/lee88688)
 
 ## License
 
